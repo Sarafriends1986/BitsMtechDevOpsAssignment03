@@ -1,5 +1,11 @@
 node {
    //def mvnHome = tool 'M3'
+   
+   stage('Setup parameters') {
+      //properties([parameters([string(description: 'IP of SonarQube server', name: 'sonarqubeip', trim: true)])])
+	  properties([parameters([string(defaultValue: '13.229.146.250', description: 'IP of SonarQube server', name: 'sonarqubeip', trim: true)])])
+   
+   }
 
    stage('Checkout Code') { 
       //git 'git@github.com:Sarafriends1986/java-maven-mathcalculator-web-app.git'
@@ -8,7 +14,7 @@ node {
    stage('Maven Test') {
       if (isUnix()) {
          //sh "'${mvnHome}/bin/mvn' clean test"
-		 sh 'echo "JUnit Test...${appversion}" ${appversion}'
+		 sh 'echo "JUnit Test...${appversion}" ${appversion} ${sonarqubeip}'
 		 sh 'pwd'
 		 sh '/opt/apache-maven-3.8.5/bin/mvn clean test'
 		 //sh"ls -ltr"
@@ -27,10 +33,20 @@ node {
       }
    }
   */
-   stage('Code Build') {
+   stage('SonarQube Code Scan') {
       if (isUnix()) {
          //sh "'${mvnHome}/bin/mvn' verify"
 		 sh"echo 'Code Build...${appversion}'${appversion}"
+		 sh '/opt/apache-maven-3.8.5/bin/mvn sonar:sonar org.sonarsource.scanner.maven:sonar-maven-plugin:3.7.0.1746:sonar   -Dsonar.projectKey=demoapp-project    -Dsonar.host.url=http://13.229.146.250:9000    -Dsonar.login=621cfbbfce8819d30697733e2eedf547ff13eaa9'
+		 
+		 
+      } else {
+        // bat(/"${mvnHome}\bin\mvn" verify/)
+      }
+   }stage('Code Build') {
+      if (isUnix()) {
+         //sh "'${mvnHome}/bin/mvn' verify"
+		 sh"echo 'Code Build...${appversion}'${appversion} ${sonarqubeip}"
 		 sh '/opt/apache-maven-3.8.5/bin/mvn package -Dmaven.test.skip=true'
 		 sh 'ls -ltr'
 		 sh 'cp target/*.war api_${appversion}.war'
