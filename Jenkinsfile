@@ -8,8 +8,8 @@ node('Slave') {
    
    stage('Setup parameters') {
       
-	  properties([parameters([string(defaultValue: '1.01.001', description: 'appversion x.xx.xxx', name: 'appversion', trim: true), string(defaultValue: '13.229.146.250', description: 'IP of SonarQube server', name: 'sonarqubeip', trim: true)])])
-	  sh 'echo "Setup Parameter...${appversion} ${sonarqubeip}" ${appversion} ${sonarqubeip}'
+	  properties([parameters([string(defaultValue: '1.01.001', description: 'appversion x.xx.xxx', name: 'appversion', trim: true), string(defaultValue: '13.229.146.250', description: 'AWS EC2 Private IP of SonarQube server.', name: 'sonarqubeip', trim: true), booleanParam(defaultValue: false, description: 'mark true for app deploy to Prod env.', name: 'deployprod')])])
+	  sh 'echo "Setup Parameter...${appversion} ${sonarqubeip} ${deployprod}" '
 	
    }
 
@@ -65,9 +65,22 @@ node('Slave') {
 	  sh 'rm -rf api_${appversion}.war'
    }
 
-   stage('Deploy') {
+   stage('Deploy Stag env') {
    
-      sh "echo 'Deploy the App...'"      
+      sh "echo 'Staging Deploy the App...'"      
+      
+	  sh 'ls -ltr'
+   }
+   
+   stage('Deploy Prod env') {
+   
+      sh "echo 'Prod Deploy the App...'"  
+	  sh "echo sh deployprod is ${params.deployprod}"
+      if (params.deployprod) { 
+	  print "Proceed with Prod Deploy..." 
+	  } else {
+	  print "Not to Proceed with Prod Deploy..." 
+	  }
       
 	  sh 'ls -ltr'
    }
