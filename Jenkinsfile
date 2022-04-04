@@ -33,6 +33,7 @@ node {
 		 sh"echo 'Code Build...${appversion}'${appversion}"
 		 sh '/opt/apache-maven-3.8.5/bin/mvn package -Dmaven.test.skip=true'
 		 sh 'ls -ltr'
+		 sh 'cp target/*.war api_${appversion}.war'
 		 
       } else {
         // bat(/"${mvnHome}\bin\mvn" verify/)
@@ -40,7 +41,7 @@ node {
    }
    
    stage('Artifact upload to AWS S3') {
-      s3Upload consoleLogLevel: 'INFO', dontSetBuildResultOnFailure: false, dontWaitForConcurrentBuildCompletion: false, entries: [[bucket: '', excludedFile: '', flatten: false, gzipFiles: false, keepForever: false, managedArtifacts: false, noUploadOnFailure: false, selectedRegion: 'ap-southeast-1', showDirectlyInBrowser: false, sourceFile: 'target/*.war', storageClass: 'STANDARD', uploadFromSlave: false, useServerSideEncryption: false]], pluginFailureResultConstraint: 'FAILURE', profileName: 'mybitsdevops', userMetadata: []
+      s3Upload consoleLogLevel: 'INFO', dontSetBuildResultOnFailure: false, dontWaitForConcurrentBuildCompletion: false, entries: [[bucket: 'mybitsdevops', excludedFile: '', flatten: false, gzipFiles: false, keepForever: false, managedArtifacts: false, noUploadOnFailure: false, selectedRegion: 'ap-southeast-1', showDirectlyInBrowser: false, sourceFile: 'api_*.war', storageClass: 'STANDARD', uploadFromSlave: false, useServerSideEncryption: false]], pluginFailureResultConstraint: 'FAILURE', profileName: 'mybitsdevops', userMetadata: []
    }
    /*
    stage('Deploy') {
