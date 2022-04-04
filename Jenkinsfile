@@ -1,6 +1,6 @@
 node {
    //def mvnHome = tool 'M3'
-   //agent { label 'master' }
+   agent { label 'javamaven' }
    stage('Setup parameters') {
       //properties([parameters([string(description: 'IP of SonarQube server', name: 'sonarqubeip', trim: true)])])
 	  properties([parameters([string(defaultValue: '1.01.001', description: 'appversion x.xx.xxx', name: 'appversion', trim: true), string(defaultValue: '13.229.146.250', description: 'IP of SonarQube server', name: 'sonarqubeip', trim: true)])])
