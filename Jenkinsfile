@@ -34,7 +34,7 @@ node('Slave') {
       if (isUnix()) {
         /* change the private IP of SonarQube EC2 instance */
 		
-		 sh "echo 'Code Build..."
+		 sh "echo 'Code Build...'"
 		 sh '/opt/apache-maven-3.8.5/bin/mvn sonar:sonar org.sonarsource.scanner.maven:sonar-maven-plugin:3.7.0.1746:sonar   -Dsonar.projectKey=demoapp-project   -Dsonar.host.url=http://172.31.2.41:9000   -Dsonar.login=621cfbbfce8819d30697733e2eedf547ff13eaa9'
 		 
 		 
