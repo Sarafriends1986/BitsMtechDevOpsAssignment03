@@ -8,7 +8,7 @@ node {
    stage('Maven Test') {
       if (isUnix()) {
          //sh "'${mvnHome}/bin/mvn' clean test"
-		 sh 'echo "JUnit Test..."'
+		 sh 'echo "JUnit Test...${appversion}" ${appversion}'
 		 sh 'pwd'
 		 sh '/opt/apache-maven-3.8.5/bin/mvn clean test'
 		 //sh"ls -ltr"
@@ -30,12 +30,17 @@ node {
    stage('Code Build') {
       if (isUnix()) {
          //sh "'${mvnHome}/bin/mvn' verify"
-		 sh"echo 'Code Build...'"
+		 sh"echo 'Code Build...${appversion}'${appversion}"
 		 sh '/opt/apache-maven-3.8.5/bin/mvn package -Dmaven.test.skip=true'
 		 sh 'ls -ltr'
+		 
       } else {
         // bat(/"${mvnHome}\bin\mvn" verify/)
       }
+   }
+   
+   stage('Artifact upload to AWS S3') {
+      s3Upload consoleLogLevel: 'INFO', dontSetBuildResultOnFailure: false, dontWaitForConcurrentBuildCompletion: false, entries: [[bucket: '', excludedFile: '', flatten: false, gzipFiles: false, keepForever: false, managedArtifacts: false, noUploadOnFailure: false, selectedRegion: 'ap-southeast-1', showDirectlyInBrowser: false, sourceFile: 'target/*.war', storageClass: 'STANDARD', uploadFromSlave: false, useServerSideEncryption: false]], pluginFailureResultConstraint: 'FAILURE', profileName: 'mybitsdevops', userMetadata: []
    }
    /*
    stage('Deploy') {
