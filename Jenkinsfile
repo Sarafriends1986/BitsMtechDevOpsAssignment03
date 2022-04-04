@@ -5,7 +5,7 @@ node {
       //git 'git@github.com:Sarafriends1986/java-maven-mathcalculator-web-app.git'
 	  checkout scm
    }
-   stage('JUnit Test') {
+   stage('Maven Test') {
       if (isUnix()) {
          //sh "'${mvnHome}/bin/mvn' clean test"
 		 sh 'echo "JUnit Test..."'
@@ -31,7 +31,7 @@ node {
       if (isUnix()) {
          //sh "'${mvnHome}/bin/mvn' verify"
 		 sh"echo 'Code Build...'"
-		 sh"/usr/bin/mvn package -Dmaven.test.skip=true"
+		 sh '/opt/apache-maven-3.8.5/bin/mvn package -Dmaven.test.skip=true"
 		 sh"ls -ltr"
       } else {
         // bat(/"${mvnHome}\bin\mvn" verify/)
