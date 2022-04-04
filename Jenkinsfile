@@ -4,7 +4,8 @@ node {
    stage('Setup parameters') {
       //properties([parameters([string(description: 'IP of SonarQube server', name: 'sonarqubeip', trim: true)])])
 	  properties([parameters([string(defaultValue: '13.229.146.250', description: 'IP of SonarQube server', name: 'sonarqubeip', trim: true)])])
-   
+	  sh 'echo "Setup Parameter...${appversion} ${sonarqubeip}" ${appversion} ${sonarqubeip}'
+	
    }
 
    stage('Checkout Code') { 
@@ -37,7 +38,7 @@ node {
       if (isUnix()) {
          //sh "'${mvnHome}/bin/mvn' verify"
 		 sh"echo 'Code Build...${appversion}'${appversion}"
-		 sh '/opt/apache-maven-3.8.5/bin/mvn sonar:sonar org.sonarsource.scanner.maven:sonar-maven-plugin:3.7.0.1746:sonar   -Dsonar.projectKey=demoapp-project    -Dsonar.host.url=http://13.229.146.250:9000    -Dsonar.login=621cfbbfce8819d30697733e2eedf547ff13eaa9'
+		 sh '/opt/apache-maven-3.8.5/bin/mvn sonar:sonar org.sonarsource.scanner.maven:sonar-maven-plugin:3.7.0.1746:sonar   -Dsonar.projectKey=demoapp-project    -Dsonar.host.url=http://172.31.2.41:9000    -Dsonar.login=621cfbbfce8819d30697733e2eedf547ff13eaa9'
 		 
 		 
       } else {
