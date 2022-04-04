@@ -10,7 +10,7 @@ node {
          //sh "'${mvnHome}/bin/mvn' clean test"
 		 sh 'echo "JUnit Test..."'
 		 sh 'pwd'
-		 sh '/opt/apache-maven-3.8.5/bin/mvn package -Dmaven.test.skip=true'
+		 sh '/opt/apache-maven-3.8.5/bin/mvn clean test'
 		 //sh"ls -ltr"
       } else {
          //bat(/"${mvnHome}\bin\mvn" clean test/)
@@ -31,8 +31,8 @@ node {
       if (isUnix()) {
          //sh "'${mvnHome}/bin/mvn' verify"
 		 sh"echo 'Code Build...'"
-		 sh '/opt/apache-maven-3.8.5/bin/mvn package -Dmaven.test.skip=true"
-		 sh"ls -ltr"
+		 sh '/opt/apache-maven-3.8.5/bin/mvn package -Dmaven.test.skip=true'
+		 sh 'ls -ltr'
       } else {
         // bat(/"${mvnHome}\bin\mvn" verify/)
       }
