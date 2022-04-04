@@ -46,8 +46,8 @@ node {
    } */
    stage('Deploy') {
       
-      cd target
-	  ls -ltr
+      sh 'cd target'
+	  sh 'ls -ltr'
    }
 }
    
