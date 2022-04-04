@@ -45,7 +45,9 @@ node {
       } else {
         // bat(/"${mvnHome}\bin\mvn" verify/)
       }
-   }stage('Code Build') {
+   }
+   
+   stage('Code Build') {
       if (isUnix()) {
          //sh "'${mvnHome}/bin/mvn' verify"
 		 sh"echo 'Code Build...${appversion}'${appversion} ${sonarqubeip}"
@@ -60,6 +62,8 @@ node {
    
    stage('Artifact upload to AWS S3') {
       s3Upload consoleLogLevel: 'INFO', dontSetBuildResultOnFailure: false, dontWaitForConcurrentBuildCompletion: false, entries: [[bucket: 'mybitsdevops', excludedFile: '', flatten: false, gzipFiles: false, keepForever: false, managedArtifacts: false, noUploadOnFailure: false, selectedRegion: 'ap-southeast-1', showDirectlyInBrowser: false, sourceFile: 'api_*.war', storageClass: 'STANDARD', uploadFromSlave: false, useServerSideEncryption: false]], pluginFailureResultConstraint: 'FAILURE', profileName: 'mybitsdevops', userMetadata: []
+	  
+	  sh 'rm -rf api_${appversion}.war'
    }
    /*
    stage('Deploy') {
