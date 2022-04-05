@@ -1,0 +1,58 @@
+- name: Deploy app in Remote server
+  hosts: '{{ host }}'
+  vars:
+    s3url: "https://mybitsdevops.s3.ap-southeast-1.amazonaws.com"
+
+  tasks:
+    - name: Check server ping
+      ping:
+    - name: Check Server Date
+      command: date
+
+    - name: Creates deploy directory
+      file:
+        path: /opt/deploy/
+        state: directory
+        mode: 0775
+        recurse: yes
+
+    - name: Download Application war from AWS S3
+      get_url:
+        url: "{{ s3url }}/api_{{ appversion }}.war"
+        dest: /opt/deploy/
+        mode: 0775
+
+    - name: Check if war file exists
+      ansible.builtin.stat:
+        path: /opt/deploy/api_{{ appversion }}.war
+      register: check_file_name
+
+    - name: Tomcat Service Stop
+      service:
+        name: tomcat
+        state: stopped
+
+    - name: Delete App content & directory
+      file:
+        state: absent
+        path: /usr/share/tomcat/webapps/api.war
+      file:
+        state: absent
+        path: /usr/share/tomcat/webapps/api/
+
+    - name: Copy file with new name
+      ansible.builtin.copy:
+        remote_src: true
+        src: /opt/deploy/api_{{ appversion }}.war
+        dest: /usr/share/tomcat/webapps/api.war
+      when: check_file_name.stat.exists
+
+    - name: Delete App content & directory
+      file:
+        state: absent
+        path: /opt/deploy/api_{{ appversion }}.war
+
+    - name: Tomcat Service Start
+      service:
+        name: tomcat
+        state: started
