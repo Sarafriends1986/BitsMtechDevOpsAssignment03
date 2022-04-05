@@ -131,15 +131,15 @@ node('Slave') {
 	
 		try {
 		  if (isUnix()) { 
-			  echo 'Deploy Prod env... ${params.deployprod}'
+			  echo 'Deploy Prod env... ${deployprod}'
 			  
-			  if (params.deployprod) { 
+			  if (deployprod) { 
 			  sh 'ansible-playbook deployment.yml -i inventoryhosts --extra-vars "host=prod appversion=${appversion}"' 
 			  } else {
 			  print "Not to Proceed with Prod Deploy..." 
 			  }
 		  } else {
-			// bat(echo 'Deploy Prod env... ${params.deployprod}')
+			// bat(echo 'Deploy Prod env... ${deployprod}')
 		  }
 		}catch (err) {
 		 echo "Caught: ${err}"
