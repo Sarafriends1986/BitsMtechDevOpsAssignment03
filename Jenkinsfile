@@ -131,7 +131,7 @@ node('Slave') {
 	
 		try {
 		  if (isUnix()) { 
-			  echo 'Deploy Prod env... ${deployprod}'
+			  sh 'echo "Deploy Prod env... ${deployprod}" '
 			  
 			  if (deployprod) { 
 			  sh 'ansible-playbook deployment.yml -i inventoryhosts --extra-vars "host=prod appversion=${appversion}"' 
