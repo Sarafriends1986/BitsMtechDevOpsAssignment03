@@ -8,7 +8,7 @@ node('Slave') {
    
    stage('Setup parameters') {
       
-	  properties([parameters([string(defaultValue: '1.01.001', description: 'appversion x.xx.xxx', name: 'appversion', trim: true), string(defaultValue: '13.229.146.250', description: 'AWS EC2 Private IP of SonarQube server.', name: 'sonarqubeip', trim: true), booleanParam(defaultValue: false, description: 'mark true for app deploy to Prod env.', name: 'deployprod')])])
+	  properties([parameters([string(defaultValue: '1.01.001', description: 'appversion x.xx.xxx', name: 'appversion', trim: true), string(defaultValue: '172.31.2.41', description: 'AWS EC2 Private IP of SonarQube server.', name: 'sonarqubeip', trim: true), booleanParam(defaultValue: false, description: 'mark true for app deploy to Prod env.', name: 'deployprod')])])
 	  sh 'echo "Setup Parameter...${appversion} ${sonarqubeip} ${deployprod}" '
 	
    }
@@ -35,7 +35,7 @@ node('Slave') {
         /* change the private IP of SonarQube EC2 instance */
 		
 		 sh "echo 'Code Build...'"
-		 sh '/opt/apache-maven-3.8.5/bin/mvn sonar:sonar org.sonarsource.scanner.maven:sonar-maven-plugin:3.7.0.1746:sonar   -Dsonar.projectKey=demoapp-project   -Dsonar.host.url=http://172.31.2.41:9000   -Dsonar.login=621cfbbfce8819d30697733e2eedf547ff13eaa9'
+		 sh '/opt/apache-maven-3.8.5/bin/mvn sonar:sonar org.sonarsource.scanner.maven:sonar-maven-plugin:3.7.0.1746:sonar   -Dsonar.projectKey=demoapp-project   -Dsonar.host.url=http://${sonarqubeip}:9000   -Dsonar.login=621cfbbfce8819d30697733e2eedf547ff13eaa9'
 		 
 		 
       } else {
