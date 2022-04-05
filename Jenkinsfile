@@ -67,9 +67,9 @@ node('Slave') {
 
    stage('Deploy Stag env') {  
 		
-		echo 'Deploy Stag env...'
-   
-		ansiblePlaybook credentialsId: 'AnsiblePri', extras: 'host=stage appversion=${appversion}', installation: 'Ansible 2.9.23', inventory: 'inventoryhosts', playbook: 'deployment.yml'
+		echo 'Deploy Stag env...${appversion}'
+		sh 'ansible-playbook deployment.yml -i inventoryhosts --extra-vars "host=stage appversion=${appversion}"'   
+		
    }
    
    stage('Deploy Prod env') {
@@ -77,7 +77,7 @@ node('Slave') {
 	  echo 'Deploy Prod env... ${params.deployprod}'
       
       if (params.deployprod) { 
-	  ansiblePlaybook credentialsId: 'AnsiblePri', extras: 'host=prod appversion=${appversion}', installation: 'Ansible 2.9.23', inventory: 'inventoryhosts', playbook: 'deployment.yml'
+	  sh 'ansible-playbook deployment.yml -i inventoryhosts --extra-vars "host=prod appversion=${appversion}"' 
 	  } else {
 	  print "Not to Proceed with Prod Deploy..." 
 	  }
