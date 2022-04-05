@@ -66,28 +66,23 @@ node('Slave') {
    }
 
    stage('Deploy Stag env') {  
+		
+		echo 'Deploy Stag env...'
    
-		sh '''
-		echo Staging Deploy the App... ${appversion}
-		mkdir stage_deploy
-		cd stage_deploy 
-		wget https://mybitsdevops.s3.ap-southeast-1.amazonaws.com/api_${appversion}.war		
-		pwd
-		ls -ltr
-		'''
+		ansiblePlaybook credentialsId: 'AnsiblePri', extras: 'host=stage appversion=${appversion}', installation: 'Ansible 2.9.23', inventory: 'inventoryhosts', playbook: 'deployment.yml'
    }
    
    stage('Deploy Prod env') {
-   
-      sh "echo 'Prod Deploy the App...'"  
-	  sh "echo sh deployprod is ${params.deployprod}"
+	
+	  echo 'Deploy Prod env... ${params.deployprod}'
+      
       if (params.deployprod) { 
-	  print "Proceed with Prod Deploy..." 
+	  ansiblePlaybook credentialsId: 'AnsiblePri', extras: 'host=prod appversion=${appversion}', installation: 'Ansible 2.9.23', inventory: 'inventoryhosts', playbook: 'deployment.yml'
 	  } else {
 	  print "Not to Proceed with Prod Deploy..." 
 	  }
       
-	  sh 'ls -ltr'
+	  
    }
 }
    
