@@ -67,7 +67,11 @@ node('Slave') {
 
    stage('Deploy Stag env') {
    
-      sh "echo 'Staging Deploy the App...'"      
+      sh "echo 'Staging Deploy the App...'"    
+		withAWS(credentials: 'AwsUserKey', endpointUrl: 'http://mybitsdevops.s3-website.ap-southeast-1.amazonaws.com', region: 'ap-southeast-1') {
+		// some block
+		s3Download(file: 'api_1.01.005.war', bucket: 'mybitsdevops', path: '/root')
+		}
       
 	  sh 'ls -ltr'
    }
