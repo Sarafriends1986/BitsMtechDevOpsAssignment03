@@ -10,7 +10,7 @@ node('Slave') {
    
 	   try {
 		  
-		  properties([parameters([string(defaultValue: '1.01.001', description: 'appversion x.xx.xxx', name: 'appversion', trim: true), string(defaultValue: '172.31.2.41', description: 'AWS EC2 Private IP of SonarQube server.', name: 'sonarqubeip', trim: true), booleanParam(defaultValue: true, description: 'mark true for app deploy to Prod env.', name: 'deployprod')])])
+		  properties([parameters([string(defaultValue: '1.01.001', description: 'appversion x.xx.xxx', name: 'appversion', trim: true), string(defaultValue: '172.31.2.41', description: 'AWS EC2 Private IP of SonarQube server.', name: 'sonarqubeip', trim: true), booleanParam(defaultValue: false, description: 'mark true for app deploy to Prod env.', name: 'deployprod')])])
 		  
 		  sh 'echo "Setup Parameter...${appversion} ${sonarqubeip} ${deployprod}" '
 		  
