@@ -10,7 +10,7 @@ node('Slave') {
    
 	   try {
 		  
-		  properties([parameters([string(defaultValue: '1.01.010', description: 'appversion x.xx.xxx', name: 'appversion', trim: true), string(defaultValue: '172.31.2.41', description: 'AWS EC2 Private IP of SonarQube server.', name: 'sonarqubeip', trim: true), booleanParam(defaultValue: false, description: 'mark true for app deploy to Prod env.', name: 'deployprod')])])
+		  properties([parameters([string(defaultValue: '1.01.011', description: 'appversion x.xx.xxx', name: 'appversion', trim: true), string(defaultValue: '172.31.2.41', description: 'AWS EC2 Private IP of SonarQube server.', name: 'sonarqubeip', trim: true), booleanParam(defaultValue: false, description: 'mark true for app deploy to Prod env.', name: 'deployprod')])])
 		  
 		  sh 'echo "Setup Parameter...${appversion} ${sonarqubeip} ${deployprod}" '
 		  
@@ -114,11 +114,11 @@ node('Slave') {
 		
 		try {
 		  if (isUnix()) { 
-			echo 'Deploy Stag env...${appversion}'
+			echo "Deploy Stag env...${appversion}"
 			sh 'ansible-playbook deployment.yml -i inventoryhosts --extra-vars "host=stage appversion=${appversion}"'   
 		  
 		  } else {
-			// bat(echo 'Deploy Stag env...${appversion}')
+			// bat(echo "Deploy Stag env...${appversion}")
 		  }
 		}catch (err) {
 		 echo "Caught: ${err}"
@@ -134,7 +134,7 @@ node('Slave') {
 		  
 				sh '''#!/bin/sh
 
-					echo "Deploy Prod env... ${deployprod}"
+					echo "Deploy Prod env... ${appversion} ${deployprod}"
 
 					if [ ${deployprod} == true ]
 					then
