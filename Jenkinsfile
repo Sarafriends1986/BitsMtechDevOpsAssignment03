@@ -136,7 +136,7 @@ node('Slave') {
 
 					echo "Deploy Prod env... ${deployprod}"
 
-					if [ ${deployprod} ]
+					if [ ${deployprod} == true ]
 					then
 					   ansible-playbook deployment.yml -i inventoryhosts --extra-vars "host=prod appversion=${appversion}"
 					else
