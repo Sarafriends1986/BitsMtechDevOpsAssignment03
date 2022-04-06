@@ -133,7 +133,7 @@ node('Slave') {
 		  if (isUnix()) { 
 			  sh 'echo "Deploy Prod env... ${deployprod}" '
 			  
-			  if (deployprod) { 
+			  if (${deployprod}) { 
 			  sh 'ansible-playbook deployment.yml -i inventoryhosts --extra-vars "host=prod appversion=${appversion}"' 
 			  } else {
 			  print "Not to Proceed with Prod Deploy..." 
