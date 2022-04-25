@@ -2,12 +2,12 @@ For APIs
 
 # Run test
 ```
-$mvnw clean test
+$mvn  clean test
 ```
 
 # Create WAR file
 ```
-$mvnw clean package
+$mvn  clean package
 ```
 
 #  Run in browser 
